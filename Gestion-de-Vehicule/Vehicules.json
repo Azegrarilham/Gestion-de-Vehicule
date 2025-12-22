@@ -1,0 +1,23 @@
+[
+    {
+        "Id": 1,
+        "Marque": "Toyota",
+        "Modele": "Yaris",
+        "Type": "Voiture",
+        "NombrePlaces": 5
+    },
+    {
+        "Id": 2,
+        "Marque": "Yamaha",
+        "Modele": "MT-07",
+        "Type": "Moto",
+        "Cylindree": 689
+    },
+    {
+        "Id": 3,
+        "Marque": "Mercedes",
+        "Modele": "Actros",
+        "Type": "Camion",
+        "CapaciteCharge": 18.5
+    }
+]

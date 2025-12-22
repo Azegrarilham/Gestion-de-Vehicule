@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Gestion_de_Vehicule.ViewModel;
 
 namespace Gestion_de_Vehicule
 {
@@ -19,6 +20,7 @@ namespace Gestion_de_Vehicule
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }

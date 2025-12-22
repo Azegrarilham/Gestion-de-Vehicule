@@ -1,0 +1,41 @@
+﻿<Window x:Class="Gestion_de_Vehicule.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gestion_de_Vehicule"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DockPanel Width="300" Background="AliceBlue" HorizontalAlignment="Left">
+
+        </DockPanel>
+        <DockPanel Width="500" Background="Blue" HorizontalAlignment="Right">
+            <StackPanel>
+                <TextBlock Text="Liste des Vehicules: " Margin="10"/>
+                <ListBox Width="498" d:ItemsSource="{Binding Vehicules}" SelectedItem="{Binding SelectedVehicule}" Height="118" VerticalAlignment="Center">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="Type: {0}, Marque: {1}, Modele: {2}, NombrePlaces: {3}, Cylindree: {4}, CapaciteCharge:{5}">
+                                        <Binding Path="Type"/>
+                                        <Binding Path="Marque"/>
+                                        <Binding Path="Modele"/>
+                                        <Binding Path="NombrePlaces"/>
+                                        <Binding Path="Cylindree"/>
+                                        <Binding Path="CapaciteCharge"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10">
+                    <Button Content="Ajouter" Margin="0,0,10,0" Command="{Binding AfficherVehicules}"/>
+                  
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>
