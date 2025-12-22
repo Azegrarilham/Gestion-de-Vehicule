@@ -32,7 +32,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10">
-                    <Button Content="Ajouter" Margin="0,0,10,0" Command="{Binding AfficherVehicules}"/>
+                    <Button Content="Afficher" Margin="0,0,10,0" Command="{Binding AfficherVehicules}"/>
                   
                 </StackPanel>
             </StackPanel>

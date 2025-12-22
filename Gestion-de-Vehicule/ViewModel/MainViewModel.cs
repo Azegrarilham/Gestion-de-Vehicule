@@ -70,7 +70,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
-        string filePath = "vehicules.json";
+        string filePath = "Data/Vehicules.json";
 
         public ICommand AfficherVehicules { get; }
 
