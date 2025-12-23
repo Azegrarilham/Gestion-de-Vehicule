@@ -108,8 +108,8 @@ namespace Gestion_de_Vehicule.ViewModel
             }
             catch (Exception ex)
             {
-                // Handle error - you might want to show a message box
-                System.Windows.MessageBox.Show($"Erreur de chargement: {ex.Message}");
+                // Handle error 
+               MessageBox.Show($"Erreur de chargement: {ex.Message}");
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

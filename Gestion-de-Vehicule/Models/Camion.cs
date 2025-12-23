@@ -17,8 +17,7 @@ namespace Gestion_de_Vehicule.Models
             set => _type = value;
         }
 
-        public Camion(string marque, string modele, double capaciteCharge)
-            : base(marque, modele)
+        public Camion(string marque, string modele, double capaciteCharge) : base(marque, modele)
         {
             CapaciteCharge = capaciteCharge;
         }

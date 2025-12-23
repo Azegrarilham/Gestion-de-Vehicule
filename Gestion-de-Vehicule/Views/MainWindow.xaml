@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Gestion_de_Vehicule"
         mc:Ignorable="d"
         Title="Gestion de Véhicules" 
-        Height="700" 
-        Width="1200"
+        Height="743" 
+        Width="1300"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -128,7 +128,7 @@
 
         <!-- Left Panel: Vehicle List -->
         <Border Grid.Column="0" 
-                Margin="20" 
+                Margin="20,20,62,20" 
                 Background="White"
                 CornerRadius="12"
                 BorderBrush="#E0E0E0"
@@ -251,14 +251,14 @@
         </Border>
 
         <!-- Right Panel: Vehicle Details -->
-        <Border Grid.Column="1" 
-                Margin="0 20 20 20" 
+        <Border 
+                Margin="857,20,10,20" 
                 Background="White"
                 CornerRadius="12"
                 BorderBrush="#E0E0E0"
                 BorderThickness="1"
                 Padding="20"
-                Effect="{StaticResource ShadowEffect}">
+                Effect="{StaticResource ShadowEffect}" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

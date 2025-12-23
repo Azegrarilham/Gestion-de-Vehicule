@@ -17,8 +17,7 @@ namespace Gestion_de_Vehicule.Models
             set => _type = value;
         }
 
-        public Moto(string marque, string modele, int cylindree)
-            : base(marque, modele)
+        public Moto(string marque, string modele, int cylindree) : base(marque, modele)
         {
             Cylindree = cylindree;
         }

@@ -17,8 +17,7 @@ namespace Gestion_de_Vehicule.Models
             set => _type = value;
         }
 
-        public Voiture(string marque, string modele, int nombrePlaces)
-            : base(marque, modele)
+        public Voiture(string marque, string modele, int nombrePlaces) : base(marque, modele)
         {
             NombrePlaces = nombrePlaces;
         }
