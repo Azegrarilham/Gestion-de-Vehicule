@@ -10,9 +10,17 @@ namespace Gestion_de_Vehicule.Models
     {
         public double CapaciteCharge { get; set; }
 
-        public Camion()
+        private string _type = "Camion";
+        public override string Type
         {
-            Type = "Camion";
+            get => _type;
+            set => _type = value;
+        }
+
+        public Camion(string marque, string modele, double capaciteCharge)
+            : base(marque, modele)
+        {
+            CapaciteCharge = capaciteCharge;
         }
     }
 }

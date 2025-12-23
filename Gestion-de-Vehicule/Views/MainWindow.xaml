@@ -5,37 +5,366 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Gestion_de_Vehicule"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DockPanel Width="300" Background="AliceBlue" HorizontalAlignment="Left">
+        Title="Gestion de Véhicules" 
+        Height="700" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen">
 
-        </DockPanel>
-        <DockPanel Width="500" Background="Blue" HorizontalAlignment="Right">
-            <StackPanel>
-                <TextBlock Text="Liste des Vehicules: " Margin="10"/>
-                <ListBox Width="498" d:ItemsSource="{Binding Vehicules}" SelectedItem="{Binding SelectedVehicule}" Height="118" VerticalAlignment="Center">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="Type: {0}, Marque: {1}, Modele: {2}, NombrePlaces: {3}, Cylindree: {4}, CapaciteCharge:{5}">
-                                        <Binding Path="Type"/>
-                                        <Binding Path="Marque"/>
-                                        <Binding Path="Modele"/>
-                                        <Binding Path="NombrePlaces"/>
-                                        <Binding Path="Cylindree"/>
-                                        <Binding Path="CapaciteCharge"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10">
-                    <Button Content="Afficher" Margin="0,0,10,0" Command="{Binding AfficherVehicules}"/>
-                  
+    <Window.Resources>
+        <!-- Modern Styles -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16 10"/>
+            <Setter Property="Margin" Value="0 0 10 0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#212121"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12 10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <Border x:Name="border" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6"
+                                    SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" 
+                                              Focusable="false" 
+                                              HorizontalScrollBarVisibility="Hidden" 
+                                              VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#2196F3"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="VehicleItemStyle" TargetType="ListViewItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Bd" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0 0 0 8">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E3F2FD"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#2196F3"/>
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Shadow Effect Resource -->
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="0" ShadowDepth="0" Color="#20000000"/>
+    </Window.Resources>
+
+    <Grid Background="#F5F7FA">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel: Vehicle List -->
+        <Border Grid.Column="0" 
+                Margin="20" 
+                Background="White"
+                CornerRadius="12"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                Padding="20"
+                Effect="{StaticResource ShadowEffect}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Liste des Véhicules" 
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="#212121"
+                               Margin="0 0 0 20"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 15">
+                        <Button Content="📋 Afficher les Véhicules" 
+                                Style="{StaticResource ModernButton}"
+                                Command="{Binding AfficherVehicules}"/>
+
+                        <TextBlock Text="{Binding Vehicules.Count, StringFormat='{}Total: {0} véhicules'}"
+                                   Foreground="#757575"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </DockPanel>
+
+                <!-- Vehicle List -->
+                <Border Grid.Row="1" 
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Margin="0 0 0 15">
+                    <ListView ItemsSource="{Binding Vehicules}"
+                              SelectedItem="{Binding SelectedVehicule}"
+                              ItemContainerStyle="{StaticResource VehicleItemStyle}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              Background="Transparent"
+                              BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Vehicle Icon -->
+                                    <Border Grid.Column="0" 
+                                            Width="50" 
+                                            Height="50" 
+                                            Background="#E3F2FD"
+                                            CornerRadius="8"
+                                            Margin="0 0 15 0">
+                                        <TextBlock Text="🚗" 
+                                                   FontSize="24"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <!-- Vehicle Details -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Marque, StringFormat='{}Marque: {0}'}"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#212121"/>
+                                        <TextBlock Text="{Binding Modele, StringFormat='{}Modèle: {0}'}"
+                                                   FontSize="14"
+                                                   Foreground="#757575"
+                                                   Margin="0 5 0 0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                            <TextBlock Text="{Binding NomberPlaces, StringFormat='{}Places: {0}'}"
+                                                       FontSize="12"
+                                                       Foreground="#757575"
+                                                       Margin="0 0 15 0"/>
+                                            <TextBlock Text="{Binding Cylindree, StringFormat='{}Cylindrée: {0}L'}"
+                                                       FontSize="12"
+                                                       Foreground="#757575"
+                                                       Visibility="Visible"/>
+                                            <TextBlock Text="{Binding CapaciteCharge, StringFormat='{}Charge: {0}kg'}"
+                                                       FontSize="12"
+                                                       Foreground="#757575"
+                                                       Margin="15 0 0 0"
+                                                       Visibility="Visible"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                        <ListView.Template>
+                            <ControlTemplate>
+                                <ScrollViewer>
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ListView.Template>
+                    </ListView>
+                </Border>
+
+                <!-- Footer -->
+                <Border Grid.Row="2" 
+                        Background="#F5F7FA"
+                        CornerRadius="8"
+                        Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="Gestion de Véhicules" 
+                                   FontSize="12"
+                                   Foreground="#757575"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Right Panel: Vehicle Details -->
+        <Border Grid.Column="1" 
+                Margin="0 20 20 20" 
+                Background="White"
+                CornerRadius="12"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                Padding="20"
+                Effect="{StaticResource ShadowEffect}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Détails du Véhicule" 
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="#212121"
+                               Margin="0 0 0 20"/>
+
+                    <!-- Form Title -->
+                    <TextBlock Text="Ajouter/Modifier un Véhicule" 
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="#212121"
+                               Margin="0 0 0 20"/>
+                </StackPanel>
+
+                <!-- Form -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Marque -->
+                        <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="Marque" 
+                                       FontSize="14"
+                                       Foreground="#757575"
+                                       Margin="0 0 0 5"/>
+                            <TextBox Text="{Binding Marque, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="40"/>
+                        </StackPanel>
+
+                        <!-- Modèle -->
+                        <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="Modèle" 
+                                       FontSize="14"
+                                       Foreground="#757575"
+                                       Margin="0 0 0 5"/>
+                            <TextBox Text="{Binding Modele, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="40"/>
+                        </StackPanel>
+
+                        <!-- Nombre de Places -->
+                        <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="Nombre de Places" 
+                                       FontSize="14"
+                                       Foreground="#757575"
+                                       Margin="0 0 0 5"/>
+                            <TextBox Text="{Binding NomberPlaces, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="40"/>
+                        </StackPanel>
+
+                        <!-- Cylindrée -->
+                        <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="Cylindrée (L)" 
+                                       FontSize="14"
+                                       Foreground="#757575"
+                                       Margin="0 0 0 5"/>
+                            <TextBox Text="{Binding Cylindree, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="40"/>
+                        </StackPanel>
+
+                        <!-- Capacité de Charge -->
+                        <StackPanel Margin="0 0 0 20">
+                            <TextBlock Text="Capacité de Charge (kg)" 
+                                       FontSize="14"
+                                       Foreground="#757575"
+                                       Margin="0 0 0 5"/>
+                            <TextBox Text="{Binding CapaciteCharge1, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBox}"
+                                     Height="40"/>
+                        </StackPanel>
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                            <Button Content="➕ Ajouter" 
+                                    Style="{StaticResource ModernButton}"
+                                    Background="#4CAF50"
+                                    Width="120"/>
+                            <Button Content="✏️ Modifier" 
+                                    Style="{StaticResource ModernButton}"
+                                    Width="120"/>
+                            <Button Content="🗑️ Supprimer" 
+                                    Style="{StaticResource ModernButton}"
+                                    Background="#F44336"
+                                    Width="120"/>
+                        </StackPanel>
+
+                        <!-- Clear Button -->
+                        <Button Content="🧹 Effacer le Formulaire" 
+                                Style="{StaticResource ModernButton}"
+                                Background="Transparent"
+                                Foreground="#757575"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                Margin="0 10 0 0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

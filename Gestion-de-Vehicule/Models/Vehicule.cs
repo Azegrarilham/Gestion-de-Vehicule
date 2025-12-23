@@ -12,6 +12,12 @@ namespace Gestion_de_Vehicule.Models
         public int Id { get; set; }
         public string Marque { get; set; }
         public string Modele { get; set; }
-        public string Type { get; protected set; }
+        public abstract string Type { get; set; }
+
+        protected Vehicule(string marque, string modele)
+        {
+            Marque = marque;
+            Modele = modele;
+        }
     }
 }

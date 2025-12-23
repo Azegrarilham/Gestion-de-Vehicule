@@ -1,16 +1,10 @@
 ﻿using Gestion_de_Vehicule.Command;
 using Gestion_de_Vehicule.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -70,6 +64,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
+
         string filePath = "Data/Vehicules.json";
 
         public ICommand AfficherVehicules { get; }
