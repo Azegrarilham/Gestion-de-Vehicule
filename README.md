@@ -8,9 +8,12 @@
 - [x] ViewModels (Base, RelayCommand, Main)
 - [ ] Injection de dépendances configurée
 - [x] Interface XAML créée
-- [ ] Convertisseur pour affichage des détails
-- [ ] Test d'ajout des 3 types
-- [ ] Test de filtrage par type
-- [ ] Test de sauvegarde/chargement
+- [x] Convertisseur pour affichage des détails
+- [x] Ajouter buttan logic
+- [x] Test d'ajout des 3 types
+- [x] Test de filtrage par type
+- [x] Test de sauvegarde/chargement
+- [ ] Modifer button logic
+- [ ] suprimer buttan logic
 - [ ] Validation des entrées
 - [ ] Interface utilisateur stylisée
