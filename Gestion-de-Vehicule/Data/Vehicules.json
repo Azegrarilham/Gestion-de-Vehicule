@@ -1,23 +1,34 @@
 [
     {
-        "Id": 1,
-        "Marque": "Toyota",
-        "Modele": "Yaris",
+        "$type": "Gestion-de-Vehicule.Models.Voiture, Gestion-de-Vehicule",
+        "NombrePlaces": 5,
         "Type": "Voiture",
-        "NombrePlaces": 5
+        "InfosSpecifiques": "5 places",
+        "Marque": "Renault",
+        "Modele": "Clio"
     },
     {
-        "Id": 2,
-        "Marque": "Yamaha",
-        "Modele": "MT-07",
+        "$type": "Gestion-de-Vehicule.Models.Moto, Gestion-de-Vehicule",
+        "Cylindree": 689,
         "Type": "Moto",
-        "Cylindree": 689
+        "InfosSpecifiques": "689 cc",
+        "Marque": "Yamaha",
+        "Modele": "MT-07"
     },
     {
-        "Id": 3,
-        "Marque": "Mercedes",
-        "Modele": "Actros",
+        "$type": "Gestion-de-Vehicule.Models.Camion, Gestion-de-Vehicule",
+        "CapaciteCharge": 18.5,
         "Type": "Camion",
-        "CapaciteCharge": 18.5
+        "InfosSpecifiques": "18.5 tonnes",
+        "Marque": "Mercedes",
+        "Modele": "Actros"
+    },
+    {
+        "$type": "Gestion-de-Vehicule.Models.Voiture, Gestion-de-Vehicule",
+        "NombrePlaces": 5,
+        "Type": "Voiture",
+        "InfosSpecifiques": "5 places",
+        "Marque": "rfr",
+        "Modele": "ref"
     }
 ]

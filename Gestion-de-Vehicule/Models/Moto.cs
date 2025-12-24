@@ -9,13 +9,9 @@ namespace Gestion_de_Vehicule.Models
     public class Moto : Vehicule
     {
         public int Cylindree { get; set; }
+        public override string Type => "Moto";
+        public override string InfoSpesifique => $"{Cylindree}";
 
-        private string _type = "Moto";
-        public override string Type
-        {
-            get => _type;
-            set => _type = value;
-        }
 
         public Moto(string marque, string modele, int cylindree) : base(marque, modele)
         {

@@ -10,12 +10,9 @@ namespace Gestion_de_Vehicule.Models
     {
         public int NombrePlaces { get; set; }
 
-        private string _type = "Voiture";
-        public override string Type
-        {
-            get => _type;
-            set => _type = value;
-        }
+        public override string Type => "Voiture";
+        public override string InfoSpesifique => $"{NombrePlaces}";
+
 
         public Voiture(string marque, string modele, int nombrePlaces) : base(marque, modele)
         {

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,9 +17,10 @@ namespace Gestion_de_Vehicule.ViewModel
         string modele;
         string nomberPlaces;
         string cylindree;
-        string CapaciteCharge;
+        string capaciteCharge;
+        string typeVehicule = "Voiture";
         Vehicule selectedVehicule;
-
+        public ObservableCollection<Vehicule> Vehicules { get; set; }= new ObservableCollection<Vehicule>();
         public string Marque
         {
             get => marque;
@@ -55,18 +57,27 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string CapaciteCharge1
+        public string CapaciteCharge
         {
-            get => CapaciteCharge;
+            get => capaciteCharge;
             set
             {
-                CapaciteCharge = value;
+                capaciteCharge = value;
+                OnPropertyChanged();
+            }
+        }
+        public string TypeVehicule
+        {
+            get => typeVehicule;
+            set
+            {
+                typeVehicule = value;
                 OnPropertyChanged();
             }
         }
 
         string filePath = "Data/Vehicules.json";
-
+        public ICommand ChargerVehicules { get; }
         public ICommand AfficherVehicules { get; }
 
         public Vehicule SelectedVehicule
@@ -79,7 +90,7 @@ namespace Gestion_de_Vehicule.ViewModel
                
             }
         }
-        public ObservableCollection<Vehicule> Vehicules { get; set; } = new ObservableCollection<Vehicule>();
+        
         public MainViewModel()
         {
             // Constructor logic here
@@ -93,10 +104,11 @@ namespace Gestion_de_Vehicule.ViewModel
                 if (File.Exists(filePath))
                 {
                     string json = File.ReadAllText(filePath);
-
-                    var vehicules = JsonSerializer.Deserialize<List<Vehicule>>(json);
+                    var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+                    var loaded = JsonConvert.DeserializeObject<ObservableCollection<Vehicule>>(json, settings);
+                    //var vehicules = JsonSerializer.Deserialize<List<Vehicule>>(json);
                     Vehicules.Clear();
-                    foreach (var V in vehicules)
+                    foreach (var V in loaded)
                     {
                         Vehicules.Add(V);
                     }

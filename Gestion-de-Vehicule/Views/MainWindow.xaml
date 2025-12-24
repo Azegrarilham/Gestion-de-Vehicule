@@ -1,9 +1,8 @@
 ﻿<Window x:Class="Gestion_de_Vehicule.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Gestion_de_Vehicule"
         mc:Ignorable="d"
         Title="Gestion de Véhicules" 
         Height="743" 
@@ -286,6 +285,12 @@
                     <StackPanel>
                         <!-- Marque -->
                         <StackPanel Margin="0 0 0 15">
+                            <TextBlock Text="Type de véhicule:"  FontSize="14" Foreground="#757575" Margin="0 0 0 5"/>
+                            <ComboBox SelectedValue="{Binding TypeVehicule, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content" Height="20">
+                                <ComboBoxItem Content="Voiture" IsSelected="True"/>
+                                <ComboBoxItem Content="Moto"/>
+                                <ComboBoxItem Content="Camion"/>
+                            </ComboBox>
                             <TextBlock Text="Marque" 
                                        FontSize="14"
                                        Foreground="#757575"
@@ -306,37 +311,42 @@
                                      Height="40"/>
                         </StackPanel>
 
-                        <!-- Nombre de Places -->
+                        <!-- Champs spécifiques selon le type -->
                         <StackPanel Margin="0 0 0 15">
-                            <TextBlock Text="Nombre de Places" 
-                                       FontSize="14"
-                                       Foreground="#757575"
-                                       Margin="0 0 0 5"/>
-                            <TextBox Text="{Binding NomberPlaces, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ModernTextBox}"
-                                     Height="40"/>
-                        </StackPanel>
 
-                        <!-- Cylindrée -->
-                        <StackPanel Margin="0 0 0 15">
-                            <TextBlock Text="Cylindrée (L)" 
-                                       FontSize="14"
-                                       Foreground="#757575"
-                                       Margin="0 0 0 5"/>
-                            <TextBox Text="{Binding Cylindree, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ModernTextBox}"
-                                     Height="40"/>
-                        </StackPanel>
-
-                        <!-- Capacité de Charge -->
-                        <StackPanel Margin="0 0 0 20">
-                            <TextBlock Text="Capacité de Charge (kg)" 
-                                       FontSize="14"
-                                       Foreground="#757575"
-                                       Margin="0 0 0 5"/>
-                            <TextBox Text="{Binding CapaciteCharge1, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ModernTextBox}"
-                                     Height="40"/>
+                            <TextBlock Text="Nombre de places:"  FontSize="14"
+                                    Foreground="#757575"
+                                    Margin="0 0 0 5"
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Voiture}"/>
+                            <TextBox Text="{Binding NomberPlaces}" 
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Voiture}" Style="{StaticResource ModernTextBox}"
+                                Height="40"/>
+                            <TextBlock Text="Cylindrée (cc):"  FontSize="14"
+                                    Foreground="#757575"
+                                    Margin="0 0 0 5"
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Moto}"/>
+                            <TextBox Text="{Binding Cylindree}" 
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Moto}" Style="{StaticResource ModernTextBox}"
+                                             Height="40"/>
+                            <TextBlock Text="Capacité de charge (tonnes):"  FontSize="14"
+                                    Foreground="#757575"
+                                    Margin="0 0 0 5"
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Camion}"/>
+                            <TextBox Text="{Binding CapaciteCharge}" 
+                                            Visibility="{Binding TypeVehicule, 
+                                            Converter={StaticResource TypeToVisibilityConverter}, 
+                                            ConverterParameter=Camion}" Style="{StaticResource ModernTextBox}"
+                                Height="40"/>
                         </StackPanel>
 
                         <!-- Action Buttons -->
