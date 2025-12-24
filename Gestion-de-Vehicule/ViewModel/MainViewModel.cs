@@ -15,12 +15,14 @@ namespace Gestion_de_Vehicule.ViewModel
     {
         string marque;
         string modele;
-        string nomberPlaces;
-        string cylindree;
-        string capaciteCharge;
+        int nomberPlaces;
+        int cylindree;
+        double capaciteCharge;
         string typeVehicule = "Voiture";
+        string filtreType = "Tous";
         Vehicule selectedVehicule;
         public ObservableCollection<Vehicule> Vehicules { get; set; }= new ObservableCollection<Vehicule>();
+        public ObservableCollection<Vehicule> VehiculesFiltres { get; set; } = new ObservableCollection<Vehicule>();
         public string Marque
         {
             get => marque;
@@ -39,7 +41,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string NomberPlaces
+        public int NomberPlaces
         {
             get => nomberPlaces;
             set
@@ -48,7 +50,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string Cylindree
+        public int Cylindree
         {
             get => cylindree;
             set
@@ -57,7 +59,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string CapaciteCharge
+        public double CapaciteCharge
         {
             get => capaciteCharge;
             set
@@ -75,10 +77,21 @@ namespace Gestion_de_Vehicule.ViewModel
                 OnPropertyChanged();
             }
         }
+        public string FiltreType
+        {
+            get => filtreType;
+            set
+            {
+                filtreType = value;
+                OnPropertyChanged();
+                FilterVehiculesInfo(null);
+            }
+        }
 
         string filePath = "Data/Vehicules.json";
         public ICommand ChargerVehicules { get; }
         public ICommand AfficherVehicules { get; }
+        public ICommand AjouterVehicules { get; }
 
         public Vehicule SelectedVehicule
         {
@@ -87,16 +100,18 @@ namespace Gestion_de_Vehicule.ViewModel
             {
                 selectedVehicule = value;
                 OnPropertyChanged();
-               
             }
         }
         
         public MainViewModel()
         {
             // Constructor logic here
+
             AfficherVehicules = new RelayCommand(AfficherVehiculesInfo);
-            
+            AjouterVehicules = new RelayCommand(AjouterVehiculeInfo);
+            AfficherVehiculesInfo(null);
         }
+        
         private void AfficherVehiculesInfo(Object obj)
         {
             try
@@ -112,17 +127,62 @@ namespace Gestion_de_Vehicule.ViewModel
                     {
                         Vehicules.Add(V);
                     }
+                    FilterVehiculesInfo(null);
                 }
                 else
                 {
                     MessageBox.Show("fichier non trouvé : " + Path.GetFullPath(filePath));
-                }
+                }              
             }
             catch (Exception ex)
             {
                 // Handle error 
                MessageBox.Show($"Erreur de chargement: {ex.Message}");
             }
+        }
+        void AjouterVehiculeInfo(Object obj)
+        {
+            if (string.IsNullOrWhiteSpace(Marque) || string.IsNullOrWhiteSpace(Modele))
+                return;
+
+            Vehicule vehicule = null;
+            switch (TypeVehicule)
+            {
+                case "Voiture":
+                    vehicule = new Voiture(Marque, Modele, NomberPlaces);
+                    break;
+                case "Moto":
+                    vehicule = new Moto(Marque, Modele, Cylindree);
+                    break;
+                case "Camion":
+                    vehicule = new Camion(Marque, Modele, CapaciteCharge);
+                    break;
+            }
+            if (vehicule != null)
+            {
+                Vehicules.Add(vehicule);
+                Vehicule.SauvegarderVehicules(Vehicules, filePath);
+                FilterVehiculesInfo(null);
+                ResetInputFields();
+            }
+        }
+        void FilterVehiculesInfo(Object obj)
+        {
+            VehiculesFiltres.Clear();
+            var filtres = FiltreType == "Tous"
+                ? Vehicules
+                : Vehicules.Where(v => v.Type == FiltreType);
+
+            foreach (var v in filtres)
+                VehiculesFiltres.Add(v);
+        }
+        void ResetInputFields()
+        {
+            Marque = string.Empty;
+            Modele = string.Empty;
+            NomberPlaces = 0;
+            Cylindree = 0;
+            CapaciteCharge = 0.0;
         }
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName] string name = null)

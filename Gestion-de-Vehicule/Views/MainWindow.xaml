@@ -122,12 +122,12 @@
     <Grid Background="#F5F7FA">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="450"/>
         </Grid.ColumnDefinitions>
 
         <!-- Left Panel: Vehicle List -->
         <Border Grid.Column="0" 
-                Margin="20,20,62,20" 
+                Margin="20,20,0,20" 
                 Background="White"
                 CornerRadius="12"
                 BorderBrush="#E0E0E0"
@@ -143,11 +143,15 @@
 
                 <!-- Header -->
                 <StackPanel Grid.Row="0">
-                    <TextBlock Text="Liste des Véhicules" 
-                               FontSize="24"
+                    <TextBlock Text="🚗 Liste des Véhicules" 
+                               FontSize="26"
                                FontWeight="Bold"
-                               Foreground="#212121"
-                               Margin="0 0 0 20"/>
+                               Foreground="#1A237E"
+                               Margin="0 0 0 20">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#1A237E"  BlurRadius="0" ShadowDepth="0" Opacity="0.1"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
 
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 15">
                         <Button Content="📋 Afficher les Véhicules" 
@@ -157,8 +161,19 @@
                         <TextBlock Text="{Binding Vehicules.Count, StringFormat='{}Total: {0} véhicules'}"
                                    Foreground="#757575"
                                    VerticalAlignment="Center"
-                                   Margin="10 0 0 0"/>
+                                   Margin="10,0,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="270,0,0,0" HorizontalAlignment="Right">
+                            <TextBlock Grid.Column="0" Text="Filtrer par type:" 
+                            FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <ComboBox Grid.Column="1" SelectedValue="{Binding FiltreType, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content" Width="100" Height="30" VerticalContentAlignment="Center" FontSize="14">
+                                <ComboBoxItem Content="Tous" IsSelected="True"/>
+                                <ComboBoxItem Content="Voiture"/>
+                                <ComboBoxItem Content="Moto"/>
+                                <ComboBoxItem Content="Camion"/>
+                            </ComboBox>
+                        </StackPanel>
                     </StackPanel>
+                    
                 </StackPanel>
 
                 <!-- Vehicle List -->
@@ -167,7 +182,7 @@
                         BorderThickness="1"
                         CornerRadius="8"
                         Margin="0 0 0 15">
-                    <ListView ItemsSource="{Binding Vehicules}"
+                    <ListView ItemsSource="{Binding VehiculesFiltres}"
                               SelectedItem="{Binding SelectedVehicule}"
                               ItemContainerStyle="{StaticResource VehicleItemStyle}"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -196,6 +211,9 @@
 
                                     <!-- Vehicle Details -->
                                     <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Type, StringFormat='{}{0}'}" 
+                                                   FontWeight="Bold" FontSize="14"
+                                                   Foreground="#2196F3"/>
                                         <TextBlock Text="{Binding Marque, StringFormat='{}Marque: {0}'}"
                                                    FontSize="16"
                                                    FontWeight="SemiBold"
@@ -209,11 +227,11 @@
                                                        FontSize="12"
                                                        Foreground="#757575"
                                                        Margin="0 0 15 0"/>
-                                            <TextBlock Text="{Binding Cylindree, StringFormat='{}Cylindrée: {0}L'}"
+                                            <TextBlock Text="{Binding Cylindree, StringFormat='{}Cylindrée: {0}cc'}"
                                                        FontSize="12"
                                                        Foreground="#757575"
                                                        Visibility="Visible"/>
-                                            <TextBlock Text="{Binding CapaciteCharge, StringFormat='{}Charge: {0}kg'}"
+                                            <TextBlock Text="{Binding CapaciteCharge, StringFormat='{}Capacite: {0}T'}"
                                                        FontSize="12"
                                                        Foreground="#757575"
                                                        Margin="15 0 0 0"
@@ -250,128 +268,311 @@
         </Border>
 
         <!-- Right Panel: Vehicle Details -->
+        <!-- Right Panel: Enhanced Vehicle Details -->
         <Border 
-                Margin="857,20,10,20" 
-                Background="White"
-                CornerRadius="12"
-                BorderBrush="#E0E0E0"
-                BorderThickness="1"
-                Padding="20"
-                Effect="{StaticResource ShadowEffect}" Grid.ColumnSpan="2">
-            <Grid>
+    Margin="850,20,10,20" 
+    Background="White"
+    CornerRadius="16"
+    BorderBrush="#E0E0E0"
+    BorderThickness="1"
+    Padding="0"
+    Effect="{StaticResource ShadowEffect}" 
+    Grid.ColumnSpan="2">
+            <Grid Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
-                <StackPanel Grid.Row="0">
-                    <TextBlock Text="Détails du Véhicule" 
-                               FontSize="24"
-                               FontWeight="Bold"
-                               Foreground="#212121"
-                               Margin="0 0 0 20"/>
-
-                    <!-- Form Title -->
-                    <TextBlock Text="Ajouter/Modifier un Véhicule" 
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Foreground="#212121"
-                               Margin="0 0 0 20"/>
-                </StackPanel>
-
-                <!-- Form -->
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <!-- Header with Gradient Background -->
+                <Border Grid.Row="0" 
+                Background="#F5F7FA"
+                CornerRadius="16,16,0,0"
+                Padding="24,20">
                     <StackPanel>
-                        <!-- Marque -->
-                        <StackPanel Margin="0 0 0 15">
-                            <TextBlock Text="Type de véhicule:"  FontSize="14" Foreground="#757575" Margin="0 0 0 5"/>
-                            <ComboBox SelectedValue="{Binding TypeVehicule, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Content" Height="20">
-                                <ComboBoxItem Content="Voiture" IsSelected="True"/>
-                                <ComboBoxItem Content="Moto"/>
-                                <ComboBoxItem Content="Camion"/>
-                            </ComboBox>
-                            <TextBlock Text="Marque" 
-                                       FontSize="14"
-                                       Foreground="#757575"
-                                       Margin="0 0 0 5"/>
-                            <TextBox Text="{Binding Marque, UpdateSourceTrigger=PropertyChanged}"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="🚗 Détails du Véhicule" 
+                                   FontSize="26"
+                                   FontWeight="Bold"
+                                   Foreground="#1A237E">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#1A237E" 
+                                                  BlurRadius="0" 
+                                                  ShadowDepth="0" 
+                                                  Opacity="0.1"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="Gérez votre flotte de véhicules" 
+                                   FontSize="13"
+                                   Foreground="#757575"
+                                   Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Enhanced Subtitle with Icon -->
+                        <Border Background="White"
+                        CornerRadius="8"
+                        Padding="16,12"
+                        Margin="0,15,0,0"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                Background="#2196F3"
+                                Width="40"
+                                Height="40"
+                                CornerRadius="8"
+                                Margin="0,0,12,0">
+                                    <TextBlock Text="📝" 
+                                       FontSize="20"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="Ajouter/Modifier un Véhicule" 
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="#212121"/>
+                                    <TextBlock Text="Remplissez les informations ci-dessous" 
+                                       FontSize="12"
+                                       Foreground="#9E9E9E"
+                                       Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Form with Better Spacing -->
+                <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto"
+                      Padding="10,20">
+                    <StackPanel>
+                        <!-- Type de véhicule with Icon -->
+                        <Border Background="#FAFAFA"
+                        CornerRadius="12"
+                        Padding="15"
+                        Margin="0,0,0,0"
+                        BorderBrush="#E0E0E0"
+                        BorderThickness="1">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                       Text="🚙" 
+                                       FontSize="20"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                                    <TextBlock Grid.Column="1"
+                                       Text="Type de véhicule"  
+                                       FontSize="15" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#424242" 
+                                       VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <ComboBox SelectedValue="{Binding TypeVehicule, UpdateSourceTrigger=PropertyChanged}" 
+                                  SelectedValuePath="Content" 
+                                  Height="30"
+                                  FontSize="14"
+                                  Padding="12,0"
+                                  BorderThickness="2"
+                                  BorderBrush="#E0E0E0" VerticalContentAlignment="Center">
+                                    <ComboBoxItem Content="Voiture" IsSelected="True"/>
+                                    <ComboBoxItem Content="Moto"/>
+                                    <ComboBoxItem Content="Camion"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Marque & Modèle in Grid Layout -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Marque -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Marque" 
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#424242"
+                                   Margin="0,0,0,8"/>
+                                <Border Background="White"
+                                BorderBrush="#BDBDBD"
+                                BorderThickness="2"
+                                CornerRadius="8">
+                                    <TextBox Text="{Binding Marque, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ModernTextBox}"
-                                     Height="40"/>
-                        </StackPanel>
+                                     BorderThickness="0"
+                                     Height="44"
+                                     Padding="12,0"
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
 
-                        <!-- Modèle -->
-                        <StackPanel Margin="0 0 0 15">
-                            <TextBlock Text="Modèle" 
-                                       FontSize="14"
-                                       Foreground="#757575"
-                                       Margin="0 0 0 5"/>
-                            <TextBox Text="{Binding Modele, UpdateSourceTrigger=PropertyChanged}"
+                            <!-- Modèle -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Modèle" 
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#424242"
+                                   Margin="0,0,0,8"/>
+                                <Border Background="White"
+                                BorderBrush="#BDBDBD"
+                                BorderThickness="2"
+                                CornerRadius="8">
+                                    <TextBox Text="{Binding Modele, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ModernTextBox}"
-                                     Height="40"/>
-                        </StackPanel>
+                                     BorderThickness="0"
+                                     Height="44"
+                                     Padding="12,0"
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
 
-                        <!-- Champs spécifiques selon le type -->
-                        <StackPanel Margin="0 0 0 15">
+                        <!-- Dynamic Fields with Better Styling -->
+                        <Border Background="#FFF3E0"
+                        CornerRadius="12"
+                        Padding="20"
+                        Margin="0,0,0,20"
+                        BorderBrush="#FFB74D"
+                        BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="ℹ️ Informations Spécifiques" 
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="#E65100"
+                                   Margin="0,0,0,15"/>
 
-                            <TextBlock Text="Nombre de places:"  FontSize="14"
-                                    Foreground="#757575"
-                                    Margin="0 0 0 5"
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Voiture}"/>
-                            <TextBox Text="{Binding NomberPlaces}" 
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Voiture}" Style="{StaticResource ModernTextBox}"
-                                Height="40"/>
-                            <TextBlock Text="Cylindrée (cc):"  FontSize="14"
-                                    Foreground="#757575"
-                                    Margin="0 0 0 5"
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Moto}"/>
-                            <TextBox Text="{Binding Cylindree}" 
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Moto}" Style="{StaticResource ModernTextBox}"
-                                             Height="40"/>
-                            <TextBlock Text="Capacité de charge (tonnes):"  FontSize="14"
-                                    Foreground="#757575"
-                                    Margin="0 0 0 5"
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Camion}"/>
-                            <TextBox Text="{Binding CapaciteCharge}" 
-                                            Visibility="{Binding TypeVehicule, 
-                                            Converter={StaticResource TypeToVisibilityConverter}, 
-                                            ConverterParameter=Camion}" Style="{StaticResource ModernTextBox}"
-                                Height="40"/>
-                        </StackPanel>
+                                <!-- Nombre de places (Voiture) -->
+                                <StackPanel Visibility="{Binding TypeVehicule, 
+                                                 Converter={StaticResource TypeToVisibilityConverter}, 
+                                                 ConverterParameter=Voiture}">
+                                    <TextBlock Text="Nombre de places" 
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="#424242"
+                                       Margin="0,0,0,8"/>
+                                    <Border Background="White"
+                                    BorderBrush="#FFB74D"
+                                    BorderThickness="2"
+                                    CornerRadius="8">
+                                        <TextBox Text="{Binding NomberPlaces}" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         BorderThickness="0"
+                                         Height="44"
+                                         Padding="12,0"
+                                         FontSize="14"
+                                         VerticalContentAlignment="Center"/>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Cylindrée (Moto) -->
+                                <StackPanel Visibility="{Binding TypeVehicule, 
+                                                 Converter={StaticResource TypeToVisibilityConverter}, 
+                                                 ConverterParameter=Moto}">
+                                    <TextBlock Text="Cylindrée (cc)" 
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="#424242"
+                                       Margin="0,0,0,8"/>
+                                    <Border Background="White"
+                                    BorderBrush="#FFB74D"
+                                    BorderThickness="2"
+                                    CornerRadius="8">
+                                        <TextBox Text="{Binding Cylindree}" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         BorderThickness="0"
+                                         Height="44"
+                                         Padding="12,0"
+                                         FontSize="14"
+                                         VerticalContentAlignment="Center"/>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Capacité de charge (Camion) -->
+                                <StackPanel Visibility="{Binding TypeVehicule, 
+                                                 Converter={StaticResource TypeToVisibilityConverter}, 
+                                                 ConverterParameter=Camion}">
+                                    <TextBlock Text="Capacité de charge (tonnes)" 
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="#424242"
+                                       Margin="0,0,0,8"/>
+                                    <Border Background="White"
+                                    BorderBrush="#FFB74D"
+                                    BorderThickness="2"
+                                    CornerRadius="8">
+                                        <TextBox Text="{Binding CapaciteCharge}" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         BorderThickness="0"
+                                         Height="44"
+                                         Padding="12,0"
+                                         FontSize="14"
+                                         VerticalContentAlignment="Center"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Separator Line -->
+                        <Border Height="1" 
+                        Background="#E0E0E0" 
+                        Margin="0,10,0,20"/>
 
                         <!-- Action Buttons -->
                         <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                             <Button Content="➕ Ajouter" 
-                                    Style="{StaticResource ModernButton}"
-                                    Background="#4CAF50"
-                                    Width="120"/>
+                             Style="{StaticResource ModernButton}"
+                             Background="#4CAF50"
+                             Width="120" Command="{Binding AjouterVehicules}"/>
                             <Button Content="✏️ Modifier" 
-                                    Style="{StaticResource ModernButton}"
-                                    Width="120"/>
+                             Style="{StaticResource ModernButton}"
+                             Width="120"/>
                             <Button Content="🗑️ Supprimer" 
-                                    Style="{StaticResource ModernButton}"
-                                    Background="#F44336"
-                                    Width="120"/>
+                             Style="{StaticResource ModernButton}"
+                             Background="#F44336"
+                             Width="120"/>
                         </StackPanel>
-
-                        <!-- Clear Button -->
-                        <Button Content="🧹 Effacer le Formulaire" 
-                                Style="{StaticResource ModernButton}"
-                                Background="Transparent"
-                                Foreground="#757575"
-                                BorderBrush="#E0E0E0"
-                                BorderThickness="1"
-                                Margin="0 10 0 0"/>
+                        <!-- Help Text -->
+                        <Border Background="#E3F2FD"
+                        CornerRadius="8"
+                        Padding="12"
+                        Margin="0,15,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="💡" 
+                                   FontSize="16"
+                                   Margin="0,0,8,0"
+                                   VerticalAlignment="Center"/>
+                                <TextBlock Text="Conseil: Tous les champs sont requis pour ajouter un véhicule" 
+                                   FontSize="12"
+                                   Foreground="#1565C0"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

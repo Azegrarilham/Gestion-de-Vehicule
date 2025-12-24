@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Gestion_de_Vehicule.Models
 {
@@ -16,6 +19,14 @@ namespace Gestion_de_Vehicule.Models
         {
             Marque = marque;
             Modele = modele;
+        }
+
+        public static void SauvegarderVehicules(ObservableCollection<Vehicule> vehicules, string filePath)
+        {
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto }; 
+            var json = JsonConvert.SerializeObject(vehicules, Newtonsoft.Json.Formatting.Indented, settings);
+            System.IO.File.WriteAllText(filePath, json);
+            MessageBox.Show("Véhicule(s) sauvegardé(s) avec succès !");
         }
     }
 }
