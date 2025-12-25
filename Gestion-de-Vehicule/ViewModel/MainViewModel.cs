@@ -126,10 +126,17 @@ namespace Gestion_de_Vehicule.ViewModel
             ModifierVehicule = new RelayCommand(ModifierVehiculeInfo, CanAddOrUpdateVehicule);
             SupprimerVehicule = new RelayCommand(SupprimerVehiculeInfo, CanDeleteVehicule);
             ResetCommand = new RelayCommand(ResetInputFieldsCommand);
-
-            AfficherVehiculesInfo(null);
+            AjouterExemples();
+            //AfficherVehiculesInfo(null);
         }
-
+        private void AjouterExemples()
+        {
+            Vehicules.Add(new Voiture ( Marque = "Renault", Modele = "Clio", NomberPlaces = 5 ));
+            Vehicules.Add(new Moto ( Marque = "Yamaha", Modele = "MT-07", Cylindree = 689 ));
+            Vehicules.Add(new Camion ( Marque = "Mercedes", Modele = "Actros", CapaciteCharge = 18.5 ));
+            FilterVehiculesInfo(null);
+            OnPropertyChanged();
+        }
         private bool CanAddOrUpdateVehicule(object obj)
         {
             return !string.IsNullOrWhiteSpace(Marque) && !string.IsNullOrWhiteSpace(Modele);
@@ -184,7 +191,7 @@ namespace Gestion_de_Vehicule.ViewModel
             if (vehicule != null)
             {
                 Vehicules.Add(vehicule);
-                selectedVehicule.SauvegarderVehicules(Vehicules, filePath);
+                SauvegarderVehicules();
                 FilterVehiculesInfo(null);
                 ResetInputFields();
                 MessageBox.Show("Véhicule ajouté avec succès!", "Succès",
@@ -220,7 +227,7 @@ namespace Gestion_de_Vehicule.ViewModel
                 if (updatedVehicule != null)
                 {
                     Vehicules.Add(updatedVehicule);
-                    selectedVehicule.SauvegarderVehicules(Vehicules, filePath);
+                    SauvegarderVehicules();
                     FilterVehiculesInfo(null);
                     ResetInputFields();
                     MessageBox.Show("Véhicule modifié avec succès!", "Succès",
@@ -247,7 +254,7 @@ namespace Gestion_de_Vehicule.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 Vehicules.Remove(SelectedVehicule);
-                selectedVehicule.SauvegarderVehicules(Vehicules, filePath);
+                SauvegarderVehicules();
                 FilterVehiculesInfo(null);
                 ResetInputFields();
                 MessageBox.Show("Véhicule supprimé avec succès!", "Succès",
@@ -386,6 +393,27 @@ namespace Gestion_de_Vehicule.ViewModel
             Cylindree = 0;
             CapaciteCharge = 0.0;
             TypeVehicule = "Voiture";
+        }
+        public void SauvegarderVehicules()
+        {
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    Formatting = Formatting.Indented
+                };
+                string json = JsonConvert.SerializeObject(Vehicules, Newtonsoft.Json.Formatting.Indented, settings);
+
+                // Ensure directory exists
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur de sauvegarde: {ex.Message}", "Erreur",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

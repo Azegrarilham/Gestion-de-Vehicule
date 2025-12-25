@@ -223,13 +223,15 @@
                                                    Foreground="#757575"
                                                    Margin="0 5 0 0"/>
                                         <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                                            <TextBlock Text="{Binding NomberPlaces, StringFormat='{}Places: {0}'}"
+                                            <TextBlock Text="{Binding NombrePlaces, StringFormat='{}Places: {0}'}"
                                                        FontSize="12"
                                                        Foreground="#757575"
-                                                       Margin="0 0 15 0"/>
+                                                       Margin="15 0 0 0"
+                                                       Visibility="Visible"/>
                                             <TextBlock Text="{Binding Cylindree, StringFormat='{}Cylindrée: {0}cc'}"
                                                        FontSize="12"
                                                        Foreground="#757575"
+                                                       Margin="15 0 0 0"
                                                        Visibility="Visible"/>
                                             <TextBlock Text="{Binding CapaciteCharge, StringFormat='{}Capacite: {0}T'}"
                                                        FontSize="12"
