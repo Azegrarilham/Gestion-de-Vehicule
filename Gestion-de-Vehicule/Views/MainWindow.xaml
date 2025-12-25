@@ -277,8 +277,8 @@
     BorderThickness="1"
     Padding="0"
     Effect="{StaticResource ShadowEffect}" 
-    Grid.ColumnSpan="2">
-            <Grid Margin="0,0,0,0">
+    Grid.ColumnSpan="2" >
+            <Grid Margin="0,0,0,0" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -548,13 +548,15 @@
                              Style="{StaticResource ModernButton}"
                              Background="#4CAF50"
                              Width="120" Command="{Binding AjouterVehicules}"/>
-                            <Button Content="✏️ Modifier" 
-                             Style="{StaticResource ModernButton}"
-                             Width="120"/>
+                             <Button Content="✏️ Modifier" 
+                            Style="{StaticResource ModernButton}"
+                            Width="120"
+                            Command="{Binding ModifierVehicule}"/>
                             <Button Content="🗑️ Supprimer" 
-                             Style="{StaticResource ModernButton}"
-                             Background="#F44336"
-                             Width="120"/>
+                            Style="{StaticResource ModernButton}"
+                            Background="#F44336"
+                            Width="120"
+                            Command="{Binding SupprimerVehicule}"/>
                         </StackPanel>
                         <!-- Help Text -->
                         <Border Background="#E3F2FD"
