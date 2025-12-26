@@ -23,4 +23,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="background.png" />
+  </ItemGroup>
+
 </Project>
